@@ -111,109 +111,12 @@ def process_bot_input_command(room_id,command, headers, bot_name):
     else:
         return
 
-def process_card_inputs(room_id,result,card_id,headers,bot_name ):
-    msg_ids_list = []
-    msg_ids_list.append(card_id)
-
-    msg_ids_list = msg_ids_list + result["old_msg_ids"].split(",")
-  
-    remove_old_msgs(room_id,msg_ids_list,headers)
-
-    if "create" in result["button_choice"]:
-        create_card(room_id,headers)
-    else:
-        #do something
-        return
-
 def remove_old_msgs(room_id,msg_ids_list,headers):
     payload = ""
     for id in msg_ids_list:
         url = f"https://api.ciscospark.com/v1/messages/{id}"
         response = requests.request("DELETE", url, data=payload, headers=headers)
         print(response.text)
-
-def create_rerun_card(room_id,result,headers,msg_ids_list=[]):
-    markdown = "Resubmit search button"
-    version = "1.0"
-    state_code = result["state_code"]
-    filter_flag = result["filter_flag"]
-    old_msg_ids = ",".join(msg_ids_list)
-    
-    print(msg_ids_list)
-    
-    body = (
-        f'{{"type": "Input.Text","id": "state_code","isVisible": false,"value": "{state_code}"}},'
-        f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{filter_flag}"}},'
-        f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": "{old_msg_ids}"}},'
-        f'{{"type": "Input.ChoiceSet","choices": [{{"title": "Re-Run Same Search","value": "rerun"}},{{"title": "Start New Search","value": "create"}}],"id": "button_choice","value": "rerun"}}'
-
-        #mobile support for cards on Roadmap
-    )
-
-    card_payload = (
-        f'{{'
-        f'"roomId": "{room_id}",'
-        f'"markdown": "{markdown}",'
-        f'"attachments": [{{'
-        f'"contentType": "application/vnd.microsoft.card.adaptive",'
-        f'"content": {{"$schema": "http://adaptivecards.io/schemas/adaptive-card.json","type": "AdaptiveCard",'
-        f'"version": "{version}","body": [{body}],'
-        f'"actions": [{{"type":"Action.Submit","title":"Submit"}}]'
-        f'}} }} ] }}'
-    )
-
-
-
-    """
-        "body": [
-            {
-                "type": "Input.Text",
-                "id": "state_code",
-                "isVisible": false,
-                "value": "Replace!"
-            },
-            {
-                "type": "Input.Text",
-                "id": "filter_flag",
-                "isVisible": false,
-                "value": "replace"
-            },
-            {
-                "type": "Input.Text",
-                "id": "old_msg_ids",
-                "isVisible": false,
-                "value": "replace"
-            },
-            {
-                "type": "Input.ChoiceSet",
-                "choices": [
-                    {
-                        "title": "Re-Run Same Search",
-                        "value": "rerun"
-                    },
-                    {
-                        "title": "Start New Search",
-                        "value": "create"
-                    }
-                ],
-                "id": "button_choice",
-                "value": "rerun"
-            }
-        ],
-        "actions": [
-            {
-                "type": "Action.Submit",
-                "title": "Submit"
-            }
-        ]
-    """
-         
-    #payload = {"roomId": room_id,"markdown": message}
-    #response = requests.request("POST", URL, data=json.dumps(payload), headers=headers)
-    print(card_payload)
-    response = requests.request("POST", URL, data=card_payload, headers=headers)
-    responseJson = json.loads(response.text)
-    print(str(responseJson))
 
 def get_msg_sent_to_bot(msg_id, headers):
     urltext = URL + "/" + msg_id
@@ -272,7 +175,7 @@ def create_card(room_id,headers):
         f'{{"type": "TextBlock","text": "OpsCandy Bot","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which environment to explore:","wrap": true}},'
         f'{{"type": "TextBlock","text": "Filter Events by Architecture:","wrap": true}},'        
-        f'{{"type": "Input.ChoiceSet","choices": [{filter_options}],"id":"filter_flag","title": "Chose tech filter","isMultiSelect": false,"value": ""}},'
+        f'{{"type": "Input.ChoiceSet","choices": [{filter_options}],"id":"filter_flag","title": "Server Options","isMultiSelect": false,"value": "meraki"}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
         f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}}'
         #f',{{"type": "Input.Toggle","title": "Mobile?","value": "false","wrap": false,"id" : "mobile_flag"}}'
@@ -302,6 +205,69 @@ def create_card(room_id,headers):
     print(str(responseJson))
     return responseJson
 
+
+def process_card_inputs(room_id,result,card_id,headers,bot_name ):
+    msg_ids_list = []
+    msg_ids_list.append(card_id)
+
+    msg_ids_list = msg_ids_list + result["old_msg_ids"].split(",")
+  
+    remove_old_msgs(room_id,msg_ids_list,headers)
+
+    if "create" in result["button_choice"]:
+        create_card(room_id,headers)
+    elif "new" in result["button_choice"]:
+        if "meraki" in result["filter_flag"]:
+            meraki_0_card(room_id,result,"meraki",headers)
+        elif "DNAC" in result["filter_flag"]:
+            pass     
+        elif "viptela" in result["filter_flag"]:
+            pass    
+        elif "ACI" in result["filter_flag"]:
+            pass   
+        elif "internal" in result["filter_flag"]:
+            pass                                
+    else:
+        #do something
+        return
+
+
+def meraki_0_card(room_id,result,api_source,headers):
+    markdown = "API Seleciton Card"
+    version = "1.0"
+    
+    #post table to teams
+    api_flag_options = (
+        f'{"title": "Get Networks","value": "networks"},'
+        f'{"title": "Get Clients","value": "clients"}'
+    )
+
+    body = (
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
+        f'{{"type": "Input.ChoiceSet","choices": [{api_flag_options}],"id":"api_flag","title": "Select API","isMultiSelect": false,"value": ""}}'
+        #mobile support for cards on Roadmap
+    )
+
+    card_payload = (
+        f'{{'
+        f'"roomId": "{room_id}",'
+        f'"markdown": "{markdown}",'
+        f'"attachments": [{{'
+        f'"contentType": "application/vnd.microsoft.card.adaptive",'
+        f'"content": {{"$schema": "http://adaptivecards.io/schemas/adaptive-card.json","type": "AdaptiveCard",'
+        f'"version": "{version}","body": [{body}],'
+        f'"actions": [{{"type":"Action.Submit","title":"Submit"}}]'
+        f'}} }} ] }}'
+    )
+
+
+         
+    #payload = {"roomId": room_id,"markdown": message}
+    #response = requests.request("POST", URL, data=json.dumps(payload), headers=headers)
+    print(card_payload)
+    response = requests.request("POST", URL, data=card_payload, headers=headers)
+    responseJson = json.loads(response.text)
+    print(str(responseJson))
 
 
 def bot_post_to_room(room_id, message, headers):
@@ -347,5 +313,38 @@ def error_handling(response,err_code,user_input,room_id,headers):
     bot_post_to_room(room_id,message,headers)
 
 
+def format_code_print_for_bot(data,state,columns,msg_flag):
+    """
+        Take pre-sorted data [{},{},{},..] and apply markdown
+        Webex does not allow for large data table formatting so code blocks(```) are used as alternative.
+        Output is one single long markdown string
+
+        Should find a way to pass in column data as a list as opposed to hard coding
+    """
+    #python string formatting is useful: {:*<n.x} --> * = filler char, (<,>,or ^) = align left,right, or center, n.x = fill for n spaces, cut off after x
+
+    #    print ("\n DATA \n")
+    #    print (data)
+    #    print ("\n COLUMNS \n")
+    #    print (columns)
+    msg_list = []
+    if msg_flag == "start":
+        msg_list.append("**Events for {}**  \n".format(state))
+    elif msg_flag == "data":
+        msg_list.append(" \n```")
+        column_str, spacer_str = row_format_for_code_print(columns,header=True)
+        msg_list.append(column_str)
+        msg_list.append(spacer_str)       
+        for row_dict in data:
+            msg_list.append(row_format_for_code_print(columns,row_dict=row_dict))
+        msg_list.append("  \n```")
+    elif msg_flag == "end":
+        msg_list.append("  \n ")
+        msg_list.append("Commands structure: \{events\} . . . \{filter\} . . . \{mobile\}  \n")
+        msg_list.append("Example:  :: events CA NV WA filter sec dc mobile  \n")   
+        msg_list.append("Example:  :: -e TX -f collab  -m  \n") 
+        msg_list.append("Example:  :: events TX mobile   \n") 
+    msg = ''.join(msg_list)
+    return msg
 
 
