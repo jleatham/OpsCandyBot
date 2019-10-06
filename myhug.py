@@ -59,7 +59,7 @@ def candy(body):
         room_id = body["data"]["roomId"]
         identity = body["data"]["personEmail"]
         text = body["data"]["id"]
-        print("Events-tbd sees POST from {}".format(identity))
+        print("OpsCandy sees POST from {}".format(identity))
         if identity != email:
             print("{}-----{}".format(identity,email))
             #command = get_msg_sent_to_bot(text).lower()
@@ -70,6 +70,7 @@ def candy(body):
             print("stripped command: {}".format(command))
             #process_bot_input_command(room_id,command, headers, name)
             #send_log_to_ss(name,str(datetime.now()),identity,command,room_id)
+            create_card(room_id,headers)
     elif resource == "memberships":
         room_id = body["data"]["roomId"]
         identity = body["data"]["personEmail"]
@@ -221,7 +222,8 @@ def get_msg_sent_to_bot(msg_id, headers):
     response = requests.request("GET", urltext, data=payload, headers=headers)
     response = json.loads(response.text)
     #print ("Message to bot : {}".format(response["text"]))
-    return response["text"]
+    print(str(response))
+    #return response["text"]
 
 def get_person_from_id(person_id, headers):
     urltext = PERSON_URL + "/" + person_id
