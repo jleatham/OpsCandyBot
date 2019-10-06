@@ -220,13 +220,13 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
         if "meraki" in result["filter_flag"]:
             if "0" in result["next_step"]:
                 meraki_0_card(room_id,result,"meraki",headers)
-            if "1" in result["next_step"]:
+            elif "1" in result["next_step"]:
                 print("made it to step 1")
                 meraki_1_card(room_id,result,"meraki",headers)                
         elif "DNAC" in result["filter_flag"]:
             if "0" in result["next_step"]:
                 dnac_0_card(room_id,result,"dnac",headers)
-            if "1" in result["next_step"]:
+            elif "1" in result["next_step"]:
                 dnac_1_card(room_id,result,"dnac",headers)    
         elif "viptela" in result["filter_flag"]:
             pass    
