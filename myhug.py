@@ -281,13 +281,19 @@ def meraki_1_card(room_id,result,api_source,headers):
     
     #post table to teams
     api_flag_options = (
-        f'{{"title": "Get Networks","value": "networks"}},'
-        f'{{"title": "Get Clients","value": "clients"}}'
+        f'{{"title": "ABC","value": "ABC"}},'
+        f'{{"title": "XYZ","value": "XYZ"}}'
     )
-
+    fact_set = (
+        f'{{"title": "1","value": "ABC"}},'
+        f'{{"title": "2","value": "XYZ"}}'
+    )
     body = (
+        f'{{"type": "TextBlock","text": "Meraki Networks","weight": "Bolder","size": "Medium"}},'
+        f'{{"type": "TextBlock","text": "Select which Network:","wrap": true}},'          
         f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
+        f'{{"type": "FactSet","facts": [{fact_set}],"id": "state_list"}},'
         f'{{"type": "Input.ChoiceSet","choices": [{api_flag_options}],"id":"api_flag","title": "Select API","isMultiSelect": false,"value": ""}}'
         #mobile support for cards on Roadmap
     )
