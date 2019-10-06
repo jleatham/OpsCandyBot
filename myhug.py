@@ -287,19 +287,25 @@ def meraki_1_card(room_id,result,api_source,headers):
     print("made it into function")
     #post table to teams
     api_flag_options = (
-        f'{{"title": "184957346","value": "184957346"}},'
-        f'{{"title": "823734838","value": "823734838"}},'
-        f'{{"title": "938485748","value": "938485748"}}'
+        f'{{"title": "1","value": "1"}},'
+        f'{{"title": "2","value": "2"}},'
+        f'{{"title": "3","value": "3"}},'
+        f'{{"title": "4","value": "4"}},'
+        f'{{"title": "5","value": "5"}},'
+        f'{{"title": "6","value": "6"}}'
     )
     fact_set = (
         f'{{"title": "1","value": "184957346"}},'
-        f'{{"title": "1","value": "823734838"}},'
-        f'{{"title": "2","value": "938485748"}}'
+        f'{{"title": "2","value": "826498631"}},'
+        f'{{"title": "3","value": "323345633"}},'
+        f'{{"title": "4","value": "492345336"}},'
+        f'{{"title": "5","value": "526353532"}},'
+        f'{{"title": "6","value": "635446741"}}'
     )
     body = (
         f'{{"type": "TextBlock","text": "Meraki Networks","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which Network:","wrap": true}},'          
-        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}},'
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "delete"}},'
         f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
@@ -394,7 +400,7 @@ def dnac_1_card(room_id,result,api_source,headers):
     body = (
         f'{{"type": "TextBlock","text": "DNAC Devices","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which Network:","wrap": true}},'          
-        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}},'
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "delete"}},'
         f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
