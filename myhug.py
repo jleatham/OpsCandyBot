@@ -217,6 +217,8 @@ def create_rerun_card(room_id,result,headers,msg_ids_list=[]):
 
 def get_msg_sent_to_bot(msg_id, headers):
     urltext = URL + "/" + msg_id
+    print(urltext)
+    print(headers)
     payload = ""
 
     response = requests.request("GET", urltext, data=payload, headers=headers)
