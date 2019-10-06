@@ -6,7 +6,7 @@ import re
 from datetime import datetime
 from operator import itemgetter
 from botFunctions import CANDY_EMAIL, CANDY_NAME
-
+from meraki import meraki as m
 
 
 
@@ -173,10 +173,10 @@ def create_card(room_id,headers):
     body = (
         f'{{"type": "ColumnSet","columns": [{{"type": "Column","width": 2,"items": ['
         f'{{"type": "TextBlock","text": "OpsCandy Bot","weight": "Bolder","size": "Medium"}},'
-        f'{{"type": "TextBlock","text": "Select which environment to explore:","wrap": true}},'
-        f'{{"type": "TextBlock","text": "Filter Events by Architecture:","wrap": true}},'        
+        f'{{"type": "TextBlock","text": "Select which environment to explore:","wrap": true}},'     
         f'{{"type": "Input.ChoiceSet","choices": [{filter_options}],"id":"filter_flag","title": "Server Options","isMultiSelect": false,"value": "meraki"}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
+        f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "0"}},'        
         f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}}'
         #f',{{"type": "Input.Toggle","title": "Mobile?","value": "false","wrap": false,"id" : "mobile_flag"}}'
         f']}}]}}'
@@ -218,7 +218,10 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
         create_card(room_id,headers)
     elif "new" in result["button_choice"]:
         if "meraki" in result["filter_flag"]:
-            meraki_0_card(room_id,result,"meraki",headers)
+            if "0" in result["next_step"]:
+                meraki_0_card(room_id,result,"meraki",headers)
+            if "1" in result["next_step"]:
+                meraki_1_card(room_id,result,"meraki",headers)                
         elif "DNAC" in result["filter_flag"]:
             pass     
         elif "viptela" in result["filter_flag"]:
@@ -233,6 +236,46 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
 
 
 def meraki_0_card(room_id,result,api_source,headers):
+    markdown = "API Seleciton Card"
+    version = "1.0"
+    
+    #post table to teams
+    api_flag_options = (
+        f'{{"title": "Get Networks","value": "networks"}},'
+        f'{{"title": "Get Clients","value": "clients"}}'
+    )
+
+    body = (
+        f'{{"type": "TextBlock","text": "Meraki Sandbox","weight": "Bolder","size": "Medium"}},'
+        f'{{"type": "TextBlock","text": "Select which API to explore:","wrap": true}},'         
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
+        f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
+        f'{{"type": "Input.ChoiceSet","choices": [{api_flag_options}],"id":"api_flag","title": "Select API","isMultiSelect": false,"value": ""}}'
+        #mobile support for cards on Roadmap
+    )
+
+    card_payload = (
+        f'{{'
+        f'"roomId": "{room_id}",'
+        f'"markdown": "{markdown}",'
+        f'"attachments": [{{'
+        f'"contentType": "application/vnd.microsoft.card.adaptive",'
+        f'"content": {{"$schema": "http://adaptivecards.io/schemas/adaptive-card.json","type": "AdaptiveCard",'
+        f'"version": "{version}","body": [{body}],'
+        f'"actions": [{{"type":"Action.Submit","title":"Submit"}}]'
+        f'}} }} ] }}'
+    )
+
+
+         
+    #payload = {"roomId": room_id,"markdown": message}
+    #response = requests.request("POST", URL, data=json.dumps(payload), headers=headers)
+    print(card_payload)
+    response = requests.request("POST", URL, data=card_payload, headers=headers)
+    responseJson = json.loads(response.text)
+    print(str(responseJson))
+
+def meraki_1_card(room_id,result,api_source,headers):
     markdown = "API Seleciton Card"
     version = "1.0"
     
@@ -269,6 +312,8 @@ def meraki_0_card(room_id,result,api_source,headers):
     response = requests.request("POST", URL, data=card_payload, headers=headers)
     responseJson = json.loads(response.text)
     print(str(responseJson))
+
+#def get_meraki_networks():
 
 
 def bot_post_to_room(room_id, message, headers):
