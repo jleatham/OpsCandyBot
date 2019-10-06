@@ -5,7 +5,7 @@ import json
 import re
 from datetime import datetime
 from operator import itemgetter
-from botFunctions import EVENTS_EMAIL, EVENTS_NAME
+from botFunctions import CANDY_EMAIL, CANDY_NAME
 
 
 
