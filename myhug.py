@@ -251,21 +251,18 @@ def create_card(room_id,headers):
     markdown = "test"
     version = "1.0"
 
-    arch_options = [ #turn into global
-        ("",["all"]),
-        ("Cross Architecture",["cross arch","cross","arch"]),
-        ("Security",["sec","security","cyber"]),
-        ("Data Center",["dc","data","datacenter"]),
-        ("Internet of Things (IoT)",["iot"]),
-        ("Cloud",["cloud"]),
-        ("Enterprise Network",["en","enterprise","routing","switching","sw","sda","dna","wireless"]),
-        ("Collaboration",["collab","col","collaboration","colab","voice","video","webex","contact","cc","ucce","uccx"])
+    explore_options = [ #turn into global
+        ("meraki",["Meraki Sandbox"]),
+        ("DNAC",["DNAC Sandbox"]),
+        ("viptela",["Viptela Sandbox"]),
+        ("ACI",["ACI Sandbox"]),
+        ("internal",["Internal Server"])
 
     ]    
     filter_list = []
-    for arch in arch_options:  
-        arch_value = arch[1][0].upper()
-        filter_list.append(f'{{"title": "{arch_value}","value": "{arch[0]}" }},')
+    for server in explore_options:  
+        server_value = server[1][0]
+        filter_list.append(f'{{"title": "{server_value}","value": "{server[0]}" }},')
 
     filter_options = "".join(filter_list)
     filter_options = filter_options[:-1] #remove last comma    
@@ -273,8 +270,7 @@ def create_card(room_id,headers):
     body = (
         f'{{"type": "ColumnSet","columns": [{{"type": "Column","width": 2,"items": ['
         f'{{"type": "TextBlock","text": "OpsCandy Bot","weight": "Bolder","size": "Medium"}},'
-        f'{{"type": "TextBlock","text": "Enter State Code(s):","wrap": true}},'
-        f'{{"type": "Input.Text","placeholder": "TX, FL, CA","id": "state_code","value": "TX, FL, CA"}},'
+        f'{{"type": "TextBlock","text": "Select which environment to explore:","wrap": true}},'
         f'{{"type": "TextBlock","text": "Filter Events by Architecture:","wrap": true}},'        
         f'{{"type": "Input.ChoiceSet","choices": [{filter_options}],"id":"filter_flag","title": "Chose tech filter","isMultiSelect": false,"value": ""}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
