@@ -1,0 +1,7 @@
+hug==2.4.1
+gunicorn==19.9.0
+requests
+smartsheet-python-sdk
+meraki
+dnacentersdk
+
