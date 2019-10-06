@@ -333,21 +333,24 @@ def meraki_1_card(room_id,result,api_source,headers):
 
 
 
+
 def dnac_0_card(room_id,result,api_source,headers):
     markdown = "API Seleciton Card"
     version = "1.0"
     
     #post table to teams
     api_flag_options = (
-        f'{{"title": "Get Networks","value": "networks"}},'
-        f'{{"title": "Get Clients","value": "clients"}}'
+        f'{{"title": "List all Devices","value": "devices"}},'
+        f'{{"title": "List all Clients","value": "clients"}}'
     )
 
     body = (
-        f'{{"type": "TextBlock","text": "Meraki Sandbox","weight": "Bolder","size": "Medium"}},'
+        f'{{"type": "TextBlock","text": "DNAC Sandbox","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which API to explore:","wrap": true}},'         
-        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}},'
+        f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
+        f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
         f'{{"type": "Input.ChoiceSet","choices": [{api_flag_options}],"id":"api_flag","title": "Select API","isMultiSelect": false,"value": ""}}'
         #mobile support for cards on Roadmap
     )
@@ -376,21 +379,25 @@ def dnac_0_card(room_id,result,api_source,headers):
 def dnac_1_card(room_id,result,api_source,headers):
     markdown = "API Seleciton Card"
     version = "1.0"
-    
+    print("made it into function")
     #post table to teams
     api_flag_options = (
-        f'{{"title": "ABC","value": "ABC"}},'
-        f'{{"title": "XYZ","value": "XYZ"}}'
+        f'{{"title": "Cat9300","value": "Cat9300"}},'
+        f'{{"title": "Cat9500","value": "Cat9500"}},'
+        f'{{"title": "Cat9800","value": "Cat9800"}}'
     )
     fact_set = (
-        f'{{"title": "1","value": "ABC"}},'
-        f'{{"title": "2","value": "XYZ"}}'
+        f'{{"title": "Cat9300","value": "10.10.10.1"}},'
+        f'{{"title": "Cat9500","value": "10.10.10.2"}},'
+        f'{{"title": "Cat9800","value": "10.10.10.3"}}'
     )
     body = (
-        f'{{"type": "TextBlock","text": "Meraki Networks","weight": "Bolder","size": "Medium"}},'
+        f'{{"type": "TextBlock","text": "DNAC Devices","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which Network:","wrap": true}},'          
-        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}},'
+        f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
+        f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
         f'{{"type": "FactSet","facts": [{fact_set}],"id": "state_list"}},'
         f'{{"type": "Input.ChoiceSet","choices": [{api_flag_options}],"id":"api_flag","title": "Select API","isMultiSelect": false,"value": ""}}'
         #mobile support for cards on Roadmap
