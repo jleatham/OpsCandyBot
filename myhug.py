@@ -225,9 +225,9 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
                 meraki_1_card(room_id,result,"meraki",headers)                
         elif "DNAC" in result["filter_flag"]:
             if "0" in result["next_step"]:
-                dnac_0_card(room_id,result,"dnac",headers)
+                dnac_0_card(room_id,result,"DNAC",headers)
             elif "1" in result["next_step"]:
-                dnac_1_card(room_id,result,"dnac",headers)    
+                dnac_1_card(room_id,result,"DNAC",headers)    
         elif "viptela" in result["filter_flag"]:
             pass    
         elif "ACI" in result["filter_flag"]:
