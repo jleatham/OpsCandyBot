@@ -221,6 +221,7 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
             if "0" in result["next_step"]:
                 meraki_0_card(room_id,result,"meraki",headers)
             if "1" in result["next_step"]:
+                print("made it to step 1")
                 meraki_1_card(room_id,result,"meraki",headers)                
         elif "DNAC" in result["filter_flag"]:
             if "0" in result["next_step"]:
@@ -282,7 +283,7 @@ def meraki_0_card(room_id,result,api_source,headers):
 def meraki_1_card(room_id,result,api_source,headers):
     markdown = "API Seleciton Card"
     version = "1.0"
-    
+    print("made it into function")
     #post table to teams
     api_flag_options = (
         f'{{"title": "ABC","value": "ABC"}},'
