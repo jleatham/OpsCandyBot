@@ -252,7 +252,8 @@ def meraki_0_card(room_id,result,api_source,headers):
     body = (
         f'{{"type": "TextBlock","text": "Meraki Sandbox","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which API to explore:","wrap": true}},'         
-        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}},'
+        f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
         f'{{"type": "Input.ChoiceSet","choices": [{api_flag_options}],"id":"api_flag","title": "Select API","isMultiSelect": false,"value": ""}}'
@@ -296,7 +297,8 @@ def meraki_1_card(room_id,result,api_source,headers):
     body = (
         f'{{"type": "TextBlock","text": "Meraki Networks","weight": "Bolder","size": "Medium"}},'
         f'{{"type": "TextBlock","text": "Select which Network:","wrap": true}},'          
-        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "{api_source}"}},'
+        f'{{"type": "Input.Text","id": "button_choice","isVisible": false,"value": "new"}},'
+        f'{{"type": "Input.Text","id": "filter_flag","isVisible": false,"value": "{api_source}"}},'
         f'{{"type": "Input.Text","id": "next_step","isVisible": false,"value": "1"}},'
         f'{{"type": "Input.Text","id": "old_msg_ids","isVisible": false,"value": ""}},'
         f'{{"type": "FactSet","facts": [{fact_set}],"id": "state_list"}},'
