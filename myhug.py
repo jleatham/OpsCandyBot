@@ -63,11 +63,11 @@ def candy(body):
         if identity != email:
             print("{}-----{}".format(identity,email))
             #command = get_msg_sent_to_bot(text).lower()
-            command = get_msg_sent_to_bot(text, headers)
-            command = (command.replace(name, '')).strip()
-            command = (command.replace('@', '')).strip()
-            command = command.lower()  #added this, don't forget to move to events-bot as well
-            print("stripped command: {}".format(command))
+            #command = get_msg_sent_to_bot(text, headers)
+            #command = (command.replace(name, '')).strip()
+            #command = (command.replace('@', '')).strip()
+            #command = command.lower()  #added this, don't forget to move to events-bot as well
+            #print("stripped command: {}".format(command))
             #process_bot_input_command(room_id,command, headers, name)
             #send_log_to_ss(name,str(datetime.now()),identity,command,room_id)
             create_card(room_id,headers)
@@ -225,7 +225,7 @@ def get_msg_sent_to_bot(msg_id, headers):
     response = json.loads(response.text)
     #print ("Message to bot : {}".format(response["text"]))
     print(str(response))
-    #return response["text"]
+    return response["text"]
 
 def get_person_from_id(person_id, headers):
     urltext = PERSON_URL + "/" + person_id
