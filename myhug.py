@@ -212,7 +212,7 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
 
     msg_ids_list = msg_ids_list + result["old_msg_ids"].split(",")
   
-    #remove_old_msgs(room_id,msg_ids_list,headers)
+    remove_old_msgs(room_id,msg_ids_list,headers)
     print(f'result = {result}')
     if "create" in result["button_choice"]:
         create_card(room_id,headers)
@@ -287,12 +287,14 @@ def meraki_1_card(room_id,result,api_source,headers):
     print("made it into function")
     #post table to teams
     api_flag_options = (
-        f'{{"title": "ABC","value": "ABC"}},'
-        f'{{"title": "XYZ","value": "XYZ"}}'
+        f'{{"title": "184957346","value": "184957346"}},'
+        f'{{"title": "823734838","value": "823734838"}},'
+        f'{{"title": "938485748","value": "938485748"}}'
     )
     fact_set = (
-        f'{{"title": "1","value": "ABC"}},'
-        f'{{"title": "2","value": "XYZ"}}'
+        f'{{"title": "1","value": "184957346"}},'
+        f'{{"title": "1","value": "823734838"}},'
+        f'{{"title": "2","value": "938485748"}}'
     )
     body = (
         f'{{"type": "TextBlock","text": "Meraki Networks","weight": "Bolder","size": "Medium"}},'
