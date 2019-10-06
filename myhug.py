@@ -213,7 +213,7 @@ def process_card_inputs(room_id,result,card_id,headers,bot_name ):
     msg_ids_list = msg_ids_list + result["old_msg_ids"].split(",")
   
     remove_old_msgs(room_id,msg_ids_list,headers)
-
+    print(f'result = {result}')
     if "create" in result["button_choice"]:
         create_card(room_id,headers)
     elif "new" in result["button_choice"]:
